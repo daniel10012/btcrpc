@@ -19,24 +19,46 @@ end_block = 200005
 
 rpc = connect(RPC_ADDRESS, RPC_USER, RPC_PASSWORD)
 
-outps = []
-blocks = []
 
+
+# Get nodes
+
+outputs = []
+blocks = []
+transactions = []
+addresses = []
 
 for i in range(start_block, end_block+1):
     block_hash = rpc.getblockhash(i)
 
-    #Outputs
-    outputs = extract_outputs(rpc, block_hash)
-    outps.extend(outputs)
+    # Outputs
+    outps = extract_outputs(rpc, block_hash)
+    outputs.extend(outps)
 
-    #Blocks
+    # Blocks
     bl = extract_block(rpc, block_hash)
     blocks.append(bl.copy())
 
+    # Transactions
+    txs = extract_transactions(rpc, block_hash)
+    transactions.extend(txs)
+
+    # Addresses
+    ads = extract_addresses(rpc, block_hash)
+    addresses.extend(ads)
+
+addresses = list(set(addresses))
+
+#print(blocks)
+#print(outputs)
+#print(transactions)
+#print(rels_blocks_tx)
+#print(addresses)
 
 
-print(blocks)
-print(outps)
+
+# Create Dataframes
+
+
 
 
